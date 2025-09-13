@@ -161,6 +161,15 @@ public class card {
                 )
         );
     }
+    public static ItemStack DICE2() {
+        return setItem(
+                Material.WAXED_COPPER_BULB,
+                Component.text("カード用ダイス🎲").decoration(TextDecoration.ITALIC, false),
+                List.of(Component.text("リストの中からランダムなカードを選出する。").decoration(TextDecoration.ITALIC, false),
+                        Component.text("※Qで投げて使用").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, true).decoration(TextDecoration.UNDERLINED, true)
+                )
+        );
+    }
 
     public static ItemStack setItem(Material m, Component s, List<Component> lore){
         ItemStack item = new ItemStack(m);

@@ -2,11 +2,9 @@ package mc.cherry_leaves.net.momotetsu2;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -67,10 +65,38 @@ public class command {
                 if(!(sender instanceof Player player)){return false;}
                 if(args.length == 0) {
                     player.getInventory().addItem(card.DICE());
+                    player.getInventory().addItem(card.DICE2());
                     player.playSound(player.getLocation(), "minecraft:entity.experience_orb.pickup", 1.0f, 1.0f);
+                }
+                if(args.length == 1) {
+                    if(args[0].equalsIgnoreCase("number")) {
+                        player.getInventory().addItem(card.DICE());
+                        player.playSound(player.getLocation(), "minecraft:entity.experience_orb.pickup", 1.0f, 1.0f);
+                    }
+                    if(args[0].equalsIgnoreCase("card")) {
+                        player.getInventory().addItem(card.DICE2());
+                        player.playSound(player.getLocation(), "minecraft:entity.experience_orb.pickup", 1.0f, 1.0f);
+                    }
+                    else {return false;}
                 }
                 else {return false;}
                 return true;
+            }
+            @Override
+            public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+                List<String> completions = new ArrayList<>();
+
+                if (args.length == 1) {
+                    // カード名の予測を提供
+                    List<String> cardNames = List.of("number", "card");
+                    String currentArg = args[0].toLowerCase();
+                    for (String cardName : cardNames) {
+                        if (cardName.toLowerCase().startsWith(currentArg)) {
+                            completions.add(cardName);
+                        }
+                    }
+                }
+                return completions;
             }
         };
         DiceGetCommand.setDescription("サイコロを入手✓");
