@@ -2,8 +2,11 @@ package mc.cherry_leaves.net.momotetsu2;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -13,9 +16,10 @@ import java.util.Objects;
 public class command {
     public void AlliRegister() {
         registerCardCommand();
+        registerDiceCommand();
     }
     private void registerCardCommand() {
-        org.bukkit.command.Command Command = new org.bukkit.command.Command("card") {
+        Command CardCommand = new Command("card") {
             @Override
             public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String @NotNull [] args) {
                 if(!(sender instanceof Player player)){return false;}
@@ -53,8 +57,23 @@ public class command {
                 return completions;
             }
         };
-
-        Command.setDescription("カードを入手✓");
-        new Momotetsu2().getServer().getCommandMap().register("Momotetsu2", Command);
+        CardCommand.setDescription("カードを入手✓");
+        new Momotetsu2().getServer().getCommandMap().register("Momotetsu2", CardCommand);
+    }
+    public void registerDiceCommand(){
+        Command DiceGetCommand = new Command("dice") {
+            @Override
+            public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String @NotNull [] args) {
+                if(!(sender instanceof Player player)){return false;}
+                if(args.length == 0) {
+                    player.getInventory().addItem(card.DICE());
+                    player.playSound(player.getLocation(), "minecraft:entity.experience_orb.pickup", 1.0f, 1.0f);
+                }
+                else {return false;}
+                return true;
+            }
+        };
+        DiceGetCommand.setDescription("サイコロを入手✓");
+        new Momotetsu2().getServer().getCommandMap().register("Momotetsu2", DiceGetCommand);
     }
 }

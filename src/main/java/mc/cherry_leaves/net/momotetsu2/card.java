@@ -152,6 +152,16 @@ public class card {
         );
     }
 
+    public static ItemStack DICE() {
+        return setItem(
+                Material.TARGET,
+                Component.text("ダイス🎲").decoration(TextDecoration.ITALIC, false),
+                List.of(Component.text("1～6の中からランダムな数字を選出する。").decoration(TextDecoration.ITALIC, false),
+                        Component.text("※Qで投げて使用").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, true).decoration(TextDecoration.UNDERLINED, true)
+                )
+        );
+    }
+
     public static ItemStack setItem(Material m, Component s, List<Component> lore){
         ItemStack item = new ItemStack(m);
         ItemMeta meta = item.getItemMeta();
