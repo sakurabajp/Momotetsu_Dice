@@ -1,0 +1,7 @@
+name: Momotetsu2
+version: '1.0-SNAPSHOT'
+main: mc.cherry_leaves.net.momotetsu2.Momotetsu2
+api-version: '1.21'
+authors: [ 桜葉 尊宏 ]
+description: This is a test mod.
+website: https://mc.cherry-leaves.net
