@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +22,7 @@ import static mc.cherry_leaves.net.momotetsu2.card.CardList;
 public final class Momotetsu2 extends JavaPlugin implements Listener {
 
     private Random random;
+    Boolean nowPlayDice = false;
 
     @Override
     public void onEnable() {
@@ -52,14 +54,20 @@ public final class Momotetsu2 extends JavaPlugin implements Listener {
 
         // 的ブロックのドロップを防ぐ（サイコロとして使用するため）
         // event.setCancelled(true);
-        event.getItemDrop().remove();
 
         // サイコロの演出を開始
-        if(m == Material.TARGET) {
+        if (m == Material.TARGET && !nowPlayDice) {
             startDiceAnimation(player);
+            event.getItemDrop().remove();
         }
-        if(m == Material.WAXED_COPPER_BULB) {
+        if (m == Material.WAXED_COPPER_BULB && !nowPlayDice) {
             startDice2Animation(player);
+            event.getItemDrop().remove();
+        }
+        if (nowPlayDice) {
+            event.setCancelled(true);
+            player.sendMessage(Component.text("他のプレイヤーがダイスを振っている最中です！").color(NamedTextColor.RED));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.1f);
         }
     }
 
@@ -73,15 +81,19 @@ public final class Momotetsu2 extends JavaPlugin implements Listener {
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 0.5f);
 
         // 演出フェーズ1: サイコロを振り始める
-        nearbyPlayers.forEach(p -> {
+        //nearbyPlayers.forEach(p -> {
+        for(Player Players : player.getWorld().getPlayers()) {
             Title title = Title.title(
                     Component.text("🎲 サイコロタイム 🎲").color(NamedTextColor.GOLD),
                     Component.text(player.getName() + " がサイコロを振っています...").color(NamedTextColor.YELLOW),
-                    Title.Times.times(Duration.ofMillis(0),Duration.ofSeconds(3),Duration.ofMillis(0)
+                    Title.Times.times(Duration.ofMillis(0), Duration.ofSeconds(3), Duration.ofMillis(0)
                     )
             );
             player.showTitle(title);
-        });
+            Players.showTitle(title);
+        }
+        // });
+        nowPlayDice = true;
 
         new BukkitRunnable() {
             int count = 0;
@@ -148,6 +160,7 @@ public final class Momotetsu2 extends JavaPlugin implements Listener {
 
                     nearbyPlayers.forEach(p -> p.sendMessage(chatComponent));
                     this.cancel();
+                    nowPlayDice = false;
                 }
             }
         }.runTaskTimer(this, 0, 2); // 0.1秒間隔で実行
@@ -163,15 +176,20 @@ public final class Momotetsu2 extends JavaPlugin implements Listener {
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 0.5f);
 
         // 演出フェーズ1: サイコロを振り始める
-        nearbyPlayers.forEach(p -> {
+        //nearbyPlayers.forEach(p -> {
+        for(Player Players : player.getWorld().getPlayers()) {
             Title title = Title.title(
                     Component.text("🎲 サイコロタイム 🎲").color(NamedTextColor.GOLD),
                     Component.text(player.getName() + " がサイコロを振っています...").color(NamedTextColor.YELLOW),
-                    Title.Times.times(Duration.ofMillis(0),Duration.ofSeconds(3),Duration.ofMillis(0)
+                    Title.Times.times(Duration.ofMillis(0), Duration.ofSeconds(3), Duration.ofMillis(0)
                     )
             );
             player.showTitle(title);
-        });
+            Players.showTitle(title);
+        }
+        //});
+
+        nowPlayDice = true;
 
         new BukkitRunnable() {
             int count = 0;
@@ -239,6 +257,7 @@ public final class Momotetsu2 extends JavaPlugin implements Listener {
                     nearbyPlayers.forEach(p -> p.sendMessage(chatComponent));
                     this.cancel();
                     player.getInventory().addItem(CardList.get(finalResult - 1));
+                    nowPlayDice = false;
                 }
             }
         }.runTaskTimer(this, 0, 2); // 0.1秒間隔で実行
