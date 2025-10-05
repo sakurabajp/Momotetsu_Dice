@@ -2,8 +2,8 @@ package mc.cherry_leaves.net.momotetsu2;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -24,7 +24,7 @@ public class CardSystem implements Listener {
             e.getItemDrop().remove();
             for(Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(Component.text(e.getPlayer().getName() + "が")
-                        .append(Component.text(" " + item.getItemStack().getItemMeta().displayName() + " ").color(NamedTextColor.YELLOW))
+                        .append(Component.text(" " + PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(item.getItemStack().getItemMeta().displayName())) + " ").color(NamedTextColor.YELLOW))
                         .append(Component.text("を使用しました！")).color(NamedTextColor.WHITE));
                 p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.8f, 0.1f);
             }
