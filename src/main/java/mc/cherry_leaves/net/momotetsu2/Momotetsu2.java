@@ -5,7 +5,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,6 +31,7 @@ public final class Momotetsu2 extends JavaPlugin implements Listener {
 
         // イベントリスナーを登録
         getServer().getPluginManager().registerEvents(this, this);
+        getServer().getPluginManager().registerEvents(new CardSystem(), this);
 
         getLogger().info("Momotetsu2プラグインが有効になりました！");
     }
@@ -55,19 +55,21 @@ public final class Momotetsu2 extends JavaPlugin implements Listener {
         // 的ブロックのドロップを防ぐ（サイコロとして使用するため）
         // event.setCancelled(true);
 
-        // サイコロの演出を開始
-        if (m == Material.TARGET && !nowPlayDice) {
-            startDiceAnimation(player);
-            event.getItemDrop().remove();
-        }
-        if (m == Material.WAXED_COPPER_BULB && !nowPlayDice) {
-            startDice2Animation(player);
-            event.getItemDrop().remove();
-        }
         if (nowPlayDice) {
             event.setCancelled(true);
             player.sendMessage(Component.text("他のプレイヤーがダイスを振っている最中です！").color(NamedTextColor.RED));
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.1f);
+            return;
+        }
+
+        // サイコロの演出を開始
+        if (m == Material.TARGET) {
+            startDiceAnimation(player);
+            event.getItemDrop().remove();
+        }
+        if (m == Material.WAXED_COPPER_BULB) {
+            startDice2Animation(player);
+            event.getItemDrop().remove();
         }
     }
 
