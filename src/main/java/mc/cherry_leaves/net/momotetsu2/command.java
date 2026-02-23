@@ -16,6 +16,7 @@ public class command {
     public void AlliRegister() {
         registerCardCommand();
         registerDiceCommand();
+        registerGameStartCommand();
     }
     private void registerCardCommand() {
         Command CardCommand = new Command("card") {
@@ -27,12 +28,12 @@ public class command {
                         player.getInventory().addItem(card.CardList.get(i));
                     }
                     player.sendMessage(Component.text("全てのカードを入手しました。"));
-                    player.playSound(player.getLocation(), "minecraft:entity.experience_orb.pickup", 1.0f, 1.0f);
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                 }
                 else if(args.length == 1) {
                     player.getInventory().addItem(new card().get_card(args[0]));
                     player.sendMessage(Objects.requireNonNull(Objects.requireNonNull(new card().get_card(args[0]).getItemMeta().displayName()).color(NamedTextColor.AQUA)).append(Component.text(" を入手しました。").color(NamedTextColor.WHITE)));
-                    player.playSound(player.getLocation(), "minecraft:entity.experience_orb.pickup", 1.0f, 1.0f);
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                 }
                 else {return false;}
                 return true;
@@ -102,5 +103,21 @@ public class command {
         };
         DiceGetCommand.setDescription("サイコロを入手✓");
         new Momotetsu2().getServer().getCommandMap().register("Momotetsu2", DiceGetCommand);
+    }
+
+    private void registerGameStartCommand() {
+        Command GameStartCommand = new Command("gamestart") {
+            @Override
+            public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String @NotNull [] args) {
+                if(!(sender.isOp())){return false;}
+                if(args.length >= 1) {
+                    // 誰か書いて
+                }
+                else {return false;}
+                return true;
+            }
+        };
+        GameStartCommand.setDescription("ゲームをスタート✓");
+        new Momotetsu2().getServer().getCommandMap().register("Momotetsu2", GameStartCommand);
     }
 }
