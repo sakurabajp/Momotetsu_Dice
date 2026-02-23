@@ -2,6 +2,7 @@ package mc.cherry_leaves.net.momotetsu2;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -66,16 +67,16 @@ public class command {
                 if(args.length == 0) {
                     player.getInventory().addItem(card.DICE());
                     player.getInventory().addItem(card.DICE2());
-                    player.playSound(player.getLocation(), "minecraft:entity.experience_orb.pickup", 1.0f, 1.0f);
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                 }
                 if(args.length == 1) {
                     if(args[0].equalsIgnoreCase("number")) {
                         player.getInventory().addItem(card.DICE());
-                        player.playSound(player.getLocation(), "minecraft:entity.experience_orb.pickup", 1.0f, 1.0f);
+                        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                     }
                     if(args[0].equalsIgnoreCase("card")) {
                         player.getInventory().addItem(card.DICE2());
-                        player.playSound(player.getLocation(), "minecraft:entity.experience_orb.pickup", 1.0f, 1.0f);
+                        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                     }
                     else {return false;}
                 }

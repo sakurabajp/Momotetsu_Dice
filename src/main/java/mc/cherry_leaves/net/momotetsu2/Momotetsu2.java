@@ -76,7 +76,6 @@ public final class Momotetsu2 extends JavaPlugin implements Listener {
     private void startDiceAnimation(Player player) {
         // 周りのプレイヤーを取得（半径20ブロック以内）
         java.util.List<Player> nearbyPlayers = player.getWorld().getPlayers().stream()
-                .filter(p -> p.getLocation().distance(player.getLocation()) <= 20)
                 .toList();
 
         // 演出開始の音
